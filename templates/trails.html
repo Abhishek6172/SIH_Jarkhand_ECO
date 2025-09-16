@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section container">
+  <h2>Adventure Trails & Treks</h2>
+  <div class="trails-grid">
+    {% for t in data.trails %}
+    <div class="trail-card">
+      <h3>{{ t.title }}</h3>
+      <div class="trail-meta">
+        <span>{{ t.distance }}</span>
+        <span>{{ t.duration }}</span>
+        <span>{{ t.price }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-left">
+      <h1>{{ data.hero.title }}</h1>
+      <p class="lead">{{ data.hero.subtitle }}</p>
+      <div class="hero-cta">
+        <a href="{{ url_for('experiences') }}" class="btn">Explore Destinations</a>
+        <a href="{{ url_for('join') }}" class="btn-outline">List Your Homestay</a>
+      </div>
+      <div class="stats">
+        {% for s in data.hero.stats %}
+        <div class="stat"><div class="stat-value">{{ s.value }}</div><div class="stat-label">{{ s.label }}</div></div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="hero-right">
+     <div class="hero-card">
+  <img src="{{ url_for('static', filename='images/jharkhand.jpg') }}" alt="Jharkhand Landscape" class="hero-img">
+</div>
+</div>
+    </div>
+  </div>
+</section>
+
+<section id="featured" class="section container">
+  <h2>Featured Experiences</h2>
+  <div class="cards-grid">
+    {% for e in data.featured_experiences %}
+    <article class="card">
+      <div class="card-tag">{{ e.type }}</div>
+      <h3>{{ e.title }}</h3>
+      <p class="muted">{{ e.desc }}</p>
+      <div class="card-footer">
+        <div class="price">{{ e.price }}/person</div>
+        <a class="btn small" href="{{ url_for('experiences') }}">View</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

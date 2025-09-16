@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section container">
+  <h2>Festivals & Events</h2>
+  <div class="cards-grid small">
+    {% for ev in data.events %}
+    <div class="card">
+      <div class="card-tag">{{ ev.type }}</div>
+      <h3>{{ ev.title }}</h3>
+      <div class="card-footer">
+        <div class="price">{{ ev.price }}/person</div>
+        <button class="btn small">Join</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

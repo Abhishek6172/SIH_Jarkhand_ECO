@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section container">
+  <h2>Platform Analytics</h2>
+  <div class="analytics-grid">
+    <div class="stat-card"><h3>{{ data.analytics.total_bookings }}</h3><p>Total Bookings</p></div>
+    <div class="stat-card"><h3>{{ data.analytics.revenue }}</h3><p>Revenue Generated</p></div>
+    <div class="stat-card"><h3>{{ data.analytics.avg_rating }}</h3><p>Average Rating</p></div>
+  </div>
+</section>
+{% endblock %}

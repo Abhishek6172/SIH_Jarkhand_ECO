@@ -1,0 +1,419 @@
+:root{ 
+  --max-width:1200px;
+
+  /* Dark glass theme palette */
+  --bg-0: #06060a;
+  --bg-1: rgba(10,15,20,0.88);
+  --surface: rgba(20,25,35,0.22);
+  --muted: #9aa6b2;
+  --text: #e6f0f6;
+  --accent: #93c5bf;
+  --card-radius:12px;
+  --shadow-strong: 0 10px 30px rgba(0,0,0,0.6);
+  --shadow-soft: 0 6px 18px rgba(2,6,23,0.45);
+  --hero-img-max-w: 640px;      /* controls the "small again" image width */
+  --hero-img-max-h: 640px;      /* controls image height limit */
+  --hero-img-scale-hover: 1.06; /* hover grow */
+  --hero-transition-speed: .85s; /* slow, smooth */
+}
+
+/* basic reset */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  margin:0; color:var(--text);
+  background: var(--bg-0);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* ----------------------------
+   Animated full-bleed background
+   ----------------------------*/
+:root { --bg-z: 0; } 
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:var(--bg-z);
+  background:
+    radial-gradient(1200px 400px at 10% 90%, rgba(109,40,217,0.06), transparent 12%),
+    radial-gradient(900px 300px at 90% 85%, rgba(99,102,241,0.05), transparent 12%),
+    linear-gradient(180deg, rgba(7,8,12,0.0), rgba(0,0,0,0.12));
+  background-size: 200% 200%;
+  animation: bg-pan 18s linear infinite;
+  mix-blend-mode: screen;
+  filter: blur(12px) contrast(1.03) saturate(1.05);
+}
+body::after{
+  content:"";
+  position:fixed;
+  left:-12%; right:-12%; bottom:-8%;
+  height:280px; z-index:calc(var(--bg-z) + 0); pointer-events:none;
+  background-image:
+    linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 50%, rgba(255,255,255,0.0) 100%),
+    linear-gradient(90deg, rgba(120,200,130,0.03), rgba(90,220,180,0.02));
+  background-size: 1400px 280px, 900px 280px;
+  background-position: 0 0, 0 40px;
+  animation: wave 14s linear infinite;
+  filter: blur(6px) contrast(.95);
+  opacity:0.95;
+  mix-blend-mode: screen;
+}
+@keyframes bg-pan {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 50% 100%; }
+  100% { background-position: 0% 0%; }
+}
+@keyframes wave {
+  0% { background-position: 0 0, 0 40px; transform: translateX(0); }
+  50% { background-position: -420px 0, -210px 40px; transform: translateX(-6px); }
+  100% { background-position: 0 0, 0 40px; transform: translateX(0); }
+}
+
+/* ----------------------------
+   CENTERED CONTENT (container)
+   ----------------------------*/
+.container{
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 20; /* above bg pseudo elements */
+}
+
+/* make any section full-width but keep content centered inside .container */
+.section { width:100%; position:relative; z-index:20; }
+
+/* ----------------------------
+   NAVBAR (sticky glass)
+   ----------------------------*/
+.site-header{
+  width:100%;
+  background: rgba(15,20,28,0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 60; /* ensure header above everything */
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 0;
+}
+.brand{font-weight:700; font-size:18px; color:var(--text); text-decoration:none}
+.nav{display:flex; align-items:center}
+.nav a{margin-left:18px; color:var(--muted); text-decoration:none; padding:8px 6px; border-radius:8px;}
+.nav a.active, .nav a:hover { color:var(--text); background: rgba(255,255,255,0.04) }
+
+/* ---------- HERO: full-height right image and responsive layout ---------- */
+/* ensure hero area stretches and child columns fill height */
+.hero {
+  padding: 100px 0 40px;
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: stretch; /* make children stretch vertically */
+}
+
+/* container that holds left and right — make it full height of hero */
+.hero .container {
+  display: flex;
+  gap: 30px;
+  align-items: stretch;  /* important so .hero-right can stretch */
+  width: 100%;
+}
+
+/* left column keeps text; allow it to size naturally */
+.hero-left {
+  flex: 1 1 55%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+/* right column should stretch to hero height */
+.hero-right {
+  flex: 1 1 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 320px;
+}
+
+/* make the hero-card behave like a contained card, with explicit max sizes
+   - this brings the image back to a "smaller" framed area (like your earlier screenshot) */
+.hero-card {
+  width: 100%;
+  max-width: var(--hero-img-max-w);
+  height: auto;                 /* let height be determined by max-height and aspect */
+  max-height: var(--hero-img-max-h);
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02));
+  transition: transform var(--hero-transition-speed) cubic-bezier(.2,.9,.2,1);
+}
+
+/* the image fills the hero-card but is limited by hero-card's max sizes */
+.hero-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* scale/crop inside the card */
+  border-radius: 16px;
+  transform-origin: center;
+  transition: transform var(--hero-transition-speed) cubic-bezier(.2,.9,.2,1), filter .35s ease;
+  will-change: transform;
+}
+
+/* hover grow — slower and gentle */
+.hero-card:hover .hero-img {
+  transform: scale(var(--hero-img-scale-hover));
+  filter: saturate(1.06) brightness(1.03);
+}
+
+/* when not hovered image returns to normal (transition handles smooth shrink) */
+.hero-card:not(:hover) .hero-img {
+  transform: scale(1);
+}
+
+/* responsive: stack on smaller screens and revert to natural height */
+@media (max-width: 900px) {
+  .hero { padding: 60px 0 24px; }
+  .hero .container { flex-direction: column; gap: 18px; }
+  .hero-left { order: 1; padding-top:0; }
+  .hero-right { order: 2; width: 100%; }
+  .hero-card { max-width: 100%; max-height: 420px; }
+  .hero-img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* tweak for very large displays: give the image a taller viewport */
+@media (min-width: 1400px) {
+  .hero-img { transform-origin: center top; }
+}
+
+/* ----------------------------
+   GLASS COMPONENTS (cards, stats, panels)
+   ----------------------------*/
+.btn{background:var(--accent); color:#042027; padding:10px 16px; border-radius:10px; text-decoration:none; display:inline-block; border:none; cursor:pointer}
+.btn-outline{border:1px solid rgba(255,255,255,0.06); padding:10px 16px; border-radius:10px; background:transparent; color:var(--text)}
+
+.stat {
+  background: var(--surface);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding:12px 16px; border-radius:10px;
+  box-shadow:var(--shadow-soft);
+}
+.stat-value{font-weight:700; font-size:18px; color:var(--text)}
+.stat-label{color:var(--muted); font-size:13px}
+
+/* CARDS GRID - centered and spaced */
+.cards-grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:18px;
+  align-items:start;
+  margin: 18px 0 40px;
+}
+.card{
+  background: var(--surface);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: var(--shadow-soft);
+  padding:18px; color:var(--text);
+}
+.card h3{margin:8px 0; color:var(--text)}
+.card p{color:var(--muted)}
+.card-tag{background: rgba(147,197,191,0.12); color:var(--accent); display:inline-block; padding:6px 8px; border-radius:8px; font-size:12px}
+.card .price{color:var(--muted); margin-top:8px}
+.card .card-footer{display:flex; align-items:center; justify-content:space-between}
+
+/* COMMUNITY, TRAILS, ANALYTICS, JOIN panels */
+.community-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:18px 0 40px;}
+.person-card, .trail-card, .stat-card, .panel {
+  background: var(--surface);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:16px; border-radius:12px; box-shadow:var(--shadow-soft);
+}
+
+/* TRAILS */
+.trails-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:18px 0 40px}
+.trail-meta{display:flex; gap:12px; color:var(--muted); font-size:14px}
+
+/* ANALYTICS */
+.analytics-grid{display:flex; gap:18px; margin:18px 0 40px}
+.stat-card{text-align:center}
+
+/* JOIN */
+.join-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:18px 0 40px}
+
+/* ----------------------------
+   FOOTER (full-width but darker overlay)
+   ----------------------------*/
+.site-footer{
+  width:100%;
+  background: linear-gradient(180deg, rgba(6,9,12,0.9), rgba(8,12,15,0.95));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color:var(--muted);
+  padding:48px 0;
+  margin-top:48px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  position:relative;
+  z-index:25; /* above container and bg */
+}
+.site-footer .container { display:flex; gap:18px; justify-content:space-between; align-items:flex-start; }
+
+/* hide any social icons left in markup if you didn't delete them */
+.social-icon { display:none !important; }
+
+/* responsive adjustments */
+@media (max-width: 1024px){
+  .cards-grid{grid-template-columns:repeat(2,1fr)}
+  .community-grid{grid-template-columns:repeat(2,1fr)}
+  .trails-grid{grid-template-columns:1fr}
+  .join-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .cards-grid{grid-template-columns:1fr}
+  .community-grid{grid-template-columns:1fr 1fr}
+  .site-footer .container{flex-direction:column; gap:18px}
+  .analytics-grid{flex-direction:column}
+}
+
+/* ----------------------------
+   CONTEXT MENU IMPROVEMENTS
+   (fix disappearing text and readability when clicked)
+   ----------------------------*/
+#menu {
+  z-index: 99999;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0s .25s, opacity .25s ease, filter .25s ease;
+  filter: blur(4px);
+  font-family: 'Inter', sans-serif;
+  color: #d6e6ea;
+  position: fixed;
+  top: 140px;
+  left: 2vw;
+  min-width: 320px;
+  min-height: 320px;
+  border-radius: 18px;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(6,6,8,0.85), rgba(6,6,8,0.6));
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px) saturate(120%);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+  mix-blend-mode: normal; /* ensure content is not blended with bg */
+}
+
+/* when open show */
+#menu.open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0s;
+  filter: blur(0);
+}
+
+/* inner content readability */
+#menu .inner {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:6px;
+  color: var(--text);
+  mix-blend-mode: normal;
+}
+#menu label { display:block; width:100%; margin-bottom:6px; }
+#menu input[type="text"] {
+  width:100%;
+  padding:10px 12px;
+  border-radius:10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  color: #e7f2f4;
+  font-size:14px;
+  outline: none;
+}
+
+/* input focus */
+#menu input[type="text"]:focus {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
+  border-color: rgba(147,197,191,0.16);
+}
+
+/* suggestions list */
+#menu ul { list-style:none; margin:8px 0 0; padding:0; display:block; }
+#menu li {
+  padding:10px 12px;
+  margin-bottom:8px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.02);
+  color: #cfe9e5;
+  font-size:14px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  border: 1px solid rgba(255,255,255,0.02);
+  transition: background .18s ease, color .18s ease, transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+  mix-blend-mode: normal; /* important so text doesn't vanish when over wave */
+}
+
+/* hover / focus / active states (explicit color contrast to avoid disappearing) */
+#menu li:hover,
+#menu li:focus,
+#menu li:active {
+  background: linear-gradient(90deg, rgba(147,197,191,0.06), rgba(255,255,255,0.02));
+  color: #ffffff;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* explicit selected class */
+#menu li.selected {
+  background: linear-gradient(90deg, rgba(147,197,191,0.08), rgba(255,255,255,0.02));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45) inset;
+  color: #ffffff;
+}
+
+/* small header text */
+#menu header { font-size:13px; color:var(--muted); padding-left:6px }
+
+/* reduce / soften glows so content is legible */
+#menu .shine, #menu .glow, #menu::before, #menu::after {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* tiny responsive adjustments for menu */
+@media (max-width:720px) {
+  #menu { left: 8px; right: 8px; top: 110px; min-width: unset; min-height: 260px;}
+  #menu li { font-size:13px; padding:9px; }
+}
+
+/* End of file */

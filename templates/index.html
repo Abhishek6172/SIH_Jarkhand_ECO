@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-left">
+      <h1>Jharkhand — Wild Lands, Living Culture</h1>
+      <p class="lead">Explore tribal villages, pristine waterfalls, and ancient rock art. Book community-led stays and support local guardians of culture.</p>
+      <div class="hero-cta">
+        <a href="{{ url_for('experiences') }}" class="btn">Explore Destinations</a>
+        <a href="{{ url_for('join') }}" class="btn-outline">List Your Homestay</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <p>Jharkhand Landscape (Image)</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Featured Experiences</h2>
+    <div class="cards-grid">
+      <article class="card">
+        <span class="card-tag">Eco Tourism</span>
+        <h3>Netarhat Sunrise Point</h3>
+        <p>Experience breathtaking sunrises, pine forests, and stargazing.</p>
+        <p class="price">₹2,500/person</p>
+        <div class="card-footer">
+          <a href="#" class="btn">View</a>
+        </div>
+      </article>
+      <article class="card">
+        <span class="card-tag">Cultural</span>
+        <h3>Santhal Village Immersion</h3>
+        <p>Live with Santhal families, learn traditional crafts and ceremonies.</p>
+        <p class="price">₹4,200/person</p>
+        <div class="card-footer">
+          <a href="#" class="btn">View</a>
+        </div>
+      </article>
+      <article class="card">
+        <span class="card-tag">Adventure</span>
+        <h3>Hundru Falls Adventure</h3>
+        <p>Trek to the majestic 320-foot waterfall and camp under the stars.</p>
+        <p class="price">₹1,800/person</p>
+        <div class="card-footer">
+          <a href="#" class="btn">View</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section container">
+  <h2>Experiences</h2>
+  <div class="cards-grid">
+    {% for e in data.featured_experiences %}
+    <article class="card">
+      <div class="card-tag">{{ e.type }}</div>
+      <h3>{{ e.title }}</h3>
+      <p class="muted">{{ e.desc }}</p>
+      <div class="card-footer">
+        <div class="price">{{ e.price }}/person</div>
+        <button class="btn small">Book Now</button>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section container">
+  <h2>Community Spotlight</h2>
+  <div class="community-grid">
+    {% for c in data.community %}
+    <div class="person-card">
+      <div class="avatar"></div>
+      <h4>{{ c.name }}</h4>
+      <p class="muted">{{ c.role }}</p>
+      <p>⭐ {{ c.rating }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
