@@ -9,9 +9,9 @@
     ]
   },
   "featured_experiences": [
-    {"title": "Netarhat Sunrise Point", "type": "Eco Tourism", "desc": "Experience breathtaking sunrises, pine forests, and stargazing.", "price": "₹2,500"},
-    {"title": "Santhal Village Immersion", "type": "Cultural", "desc": "Live with Santhal families, learn traditional crafts and ceremonies.", "price": "₹4,200"},
-    {"title": "Hundru Falls Adventure", "type": "Adventure", "desc": "Trek to the majestic 320-foot waterfall and camp under the stars.", "price": "₹1,800"}
+    {"id":1,"title": "Netarhat Sunrise Point", "type": "Eco Tourism", "desc": "Experience breathtaking sunrises, pine forests, and stargazing.", "price": "₹2,500"},
+    {"id":2,"title": "Santhal Village Immersion", "type": "Cultural", "desc": "Live with Santhal families, learn traditional crafts and ceremonies.", "price": "₹4,200"},
+    {"id":3,"title": "Hundru Falls Adventure", "type": "Adventure", "desc": "Trek to the majestic 320-foot waterfall and camp under the stars.", "price": "₹1,800"}
   ],
   "community": [
     {"name": "Ravi Kumar", "role": "Eco Guide & Homestay Owner", "rating": "4.9"},
@@ -20,18 +20,32 @@
     {"name": "Anjali Munda", "role": "Cultural Performer & Storyteller", "rating": "4.9"}
   ],
   "events": [
-    {"title": "Sarhul Festival", "type": "Cultural", "price": "₹1,200"},
-    {"title": "Karma Festival", "type": "Harvest", "price": "₹1,500"},
-    {"title": "Eco Workshop", "type": "Workshop", "price": "₹2,800"}
+    {"id":5,"title": "Sarhul Festival", "type": "Cultural", "price": "₹1,200"},
+    {"id":6,"title": "Karma Festival", "type": "Harvest", "price": "₹1,500"},
+    {"id":7,"title": "Eco Workshop", "type": "Workshop", "price": "₹2,800"}
   ],
   "trails": [
-    {"title": "Netarhat Sunrise Trek", "distance": "5km", "duration": "2h", "price": "₹800"},
-    {"title": "Hundru Falls Circuit", "distance": "12km", "duration": "6h", "price": "₹1,500"},
-    {"title": "Betla Wildlife Safari", "distance": "20km", "duration": "2 days", "price": "₹3,200"}
+    {"id":8,"title": "Netarhat Sunrise Trek", "distance": "5km", "duration": "2h", "price": "₹800"},
+    {"id":9,"title": "Hundru Falls Circuit", "distance": "12km", "duration": "6h", "price": "₹1,500"},
+    {"id":10,"title": "Betla Wildlife Safari", "distance": "20km", "duration": "2 days", "price": "₹3,200"}
   ],
   "analytics": {
     "total_bookings": 1247,
     "revenue": "₹18.5L",
     "avg_rating": 4.8
-  }
+  },
+  "users":[
+    {"user_id":101,"name":"Alice"},
+    {"user_id":102,"name":"Bob"},
+    {"user_id":103,"name":"Charlie"}
+  ],
+  "bookings":[
+    {"user_id":101,"item_id":2},
+    {"user_id":101,"item_id":5},
+    {"user_id":102,"item_id":3},
+    {"user_id":102,"item_id":9},
+    {"user_id":103,"item_id":5},
+    {"user_id":103,"item_id":7},
+    {"user_id":103,"item_id":2}
+  ]
 }
