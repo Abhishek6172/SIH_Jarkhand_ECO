@@ -1,5 +1,6 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import json, os
+import ml_models import get_recommendadtion, analyze_sentiment
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -38,6 +39,24 @@ def join():
 @app.route("/api/data")
 def api_data():
     return jsonify(SAMPLE)
+
+@app.route("/api/recommendations/<int:user_id>")
+def api_recommend(user_id):
+    recommendations=get_recommendations(user_id)
+    return jsonify(recommendations)
+
+@app.route("/api/analyze-sentiment",methods=['POST'])
+def api_analyze_sentiment():
+    try:
+        data=request.get_json()
+        review_text=data.get('review_text')
+        if not review_text:
+            return jsonify({"error":"No review text provided"}),400)
+        sentiment=analyze_sentiment(review_text)
+        return jsonify({"sentiment":sentiment})
+
+    except Exception as e:
+        return jsonify({"error":str(e)}),500
 
 if __name__ == "__main__":
     app.run(debug=True)
