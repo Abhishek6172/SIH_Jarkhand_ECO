@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 import json, os
 import recommendation_model import get_recommendadtion, analyze_sentiment
+import re
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -57,6 +58,28 @@ def api_analyze_sentiment():
 
     except Exception as e:
         return jsonify({"error":str(e)}),500
+
+@app.route("/api/search")
+def search():
+    query = request.args.get("q", "").lower()
+    
+    # Combined list of all searchable items
+    searchable_items = (
+        SAMPLE['featured_experiences'] +
+        SAMPLE['community'] +
+        SAMPLE['events'] +
+        SAMPLE['trails']
+    )
+
+    # Filter items based on the search query
+    results = [
+        item for item in searchable_items
+        if query in str(item.get("title", "")).lower() or
+        query in str(item.get("name", "")).lower() or
+        query in str(item.get("role", "")).lower() or
+        query in str(item.get("type", "")).lower()
+    ]
+    return jsonify(results)
 
 if __name__ == "__main__":
     app.run(debug=True)
