@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import json, os
-import ml_models import get_recommendadtion, analyze_sentiment
+import recommendation_model import get_recommendadtion, analyze_sentiment
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
