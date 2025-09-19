@@ -1,23 +1,35 @@
 {% extends "base.html" %}
+
 {% block content %}
-<section class="section container">
-  <h2>Join Our Community</h2>
-  <div class="join-grid">
-    <div class="panel">
-      <h3>List Your Homestay</h3>
-      <p>Share your home with travelers and earn sustainable income.</p>
-      <button class="btn">Start Hosting</button>
+  <section class="section join">
+    <div class="container-wide">
+      <h2 class="section-heading">Join Our Community</h2>
+
+      <div class="join-grid">
+        <div class="join-card">
+          <div class="card-inner">
+            <h3>List Your Homestay</h3>
+            <p>Share your home with travelers and earn sustainable income.</p>
+            <a href="#" class="btn primary">Start Hosting</a>
+          </div>
+        </div>
+
+        <div class="join-card">
+          <div class="card-inner">
+            <h3>Showcase Your Craft</h3>
+            <p>Share traditional arts and crafts with a global audience.</p>
+            <a href="#" class="btn primary">Join as Artisan</a>
+          </div>
+        </div>
+
+        <div class="join-card">
+          <div class="card-inner">
+            <h3>Become a Guide</h3>
+            <p>Lead travelers through Jharkhand's hidden gems and stories.</p>
+            <a href="#" class="btn primary">Apply as Guide</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="panel">
-      <h3>Showcase Your Craft</h3>
-      <p>Share traditional arts and crafts with global audience.</p>
-      <button class="btn">Join as Artisan</button>
-    </div>
-    <div class="panel">
-      <h3>Become a Guide</h3>
-      <p>Lead travelers through Jharkhand's hidden gems.</p>
-      <button class="btn">Apply as Guide</button>
-    </div>
-  </div>
-</section>
+  </section>
 {% endblock %}

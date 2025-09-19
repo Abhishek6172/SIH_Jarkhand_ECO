@@ -1,16 +1,36 @@
 {% extends "base.html" %}
+
+{% block hero_text %}
+  <h1 class="hero-title">Community Spotlight</h1>
+  <p class="hero-sub">Meet our hosts, artisans and conservation champions.</p>
+{% endblock %}
+
 {% block content %}
-<section class="section container">
-  <h2>Community Spotlight</h2>
-  <div class="community-grid">
-    {% for c in data.community %}
-    <div class="person-card">
-      <div class="avatar"></div>
-      <h4>{{ c.name }}</h4>
-      <p class="muted">{{ c.role }}</p>
-      <p>⭐ {{ c.rating }}</p>
+<section class="section community">
+  <div class="container">
+    <h2 class="section-heading">Community Spotlight</h2>
+
+    <div class="community-grid">
+      {% for member in data.community %}
+      <article class="community-card">
+        <div class="card-inner">
+          {% if member.avatar %}
+          <div class="community-avatar">
+            <img src="{{ url_for('static', filename=member.avatar) }}" alt="{{ member.name }}">
+          </div>
+          {% endif %}
+
+          <h3 class="community-name">{{ member.name }}</h3>
+          <p class="community-role">{{ member.role }}</p>
+
+          <div class="community-meta">
+            <span class="star">★</span>
+            <span class="rating">{{ member.rating }}</span>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 </section>
 {% endblock %}

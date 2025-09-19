@@ -1,18 +1,35 @@
 {% extends "base.html" %}
+
 {% block content %}
-<section class="section container">
-  <h2>Adventure Trails & Treks</h2>
+<section>
+  <h2 class="section-heading">Adventure Trails & Treks</h2>
   <div class="trails-grid">
-    {% for t in data.trails %}
+    <!-- Netarhat -->
     <div class="trail-card">
-      <h3>{{ t.title }}</h3>
-      <div class="trail-meta">
-        <span>{{ t.distance }}</span>
-        <span>{{ t.duration }}</span>
-        <span>{{ t.price }}</span>
+      <img src="{{ url_for('static', filename='images/netarhat.jpg') }}" alt="Netarhat Sunrise Trek">
+      <div class="trail-content">
+        <h3>Netarhat Sunrise Trek</h3>
+        <p>5km · 2h · ₹800</p>
       </div>
     </div>
-    {% endfor %}
+
+    <!-- Hundru Falls -->
+    <div class="trail-card">
+      <img src="{{ url_for('static', filename='images/Hundrufalls.jpg') }}" alt="Hundru Falls Circuit">
+      <div class="trail-content">
+        <h3>Hundru Falls Circuit</h3>
+        <p>12km · 6h · ₹1,500</p>
+      </div>
+    </div>
+
+    <!-- Betla Wildlife -->
+    <div class="trail-card">
+      <img src="{{ url_for('static', filename='images/Betla.jpg') }}" alt="Betla Wildlife Safari">
+      <div class="trail-content">
+        <h3>Betla Wildlife Safari</h3>
+        <p>20km · 2 days · ₹3,200</p>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}
