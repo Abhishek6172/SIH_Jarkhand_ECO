@@ -3,105 +3,116 @@
     "title": "Jharkhand — Wild Lands, Living Culture",
     "subtitle": "Explore tribal villages, pristine waterfalls, and ancient rock art. Book community-led stays and support local guardians of culture.",
     "stats": [
-      {
-        "label": "Eco Villages",
-        "value": "50+"
-      },
-      {
-        "label": "Tribal Communities",
-        "value": "12"
-      },
-      {
-        "label": "Cultural Sites",
-        "value": "200+"
-      }
+      { "label": "Eco Villages", "value": "50+" },
+      { "label": "Tribal Communities", "value": "12" },
+      { "label": "Cultural Sites", "value": "200+" }
     ]
   },
+
   "featured_experiences": [
     {
+      "id": 1,
       "title": "Netarhat Sunrise Point",
       "type": "Eco Tourism",
       "desc": "Experience breathtaking sunrises, pine forests, and stargazing.",
       "price": "₹2,500"
     },
     {
+      "id": 2,
       "title": "Santhal Village Immersion",
       "type": "Cultural",
       "desc": "Live with Santhal families, learn traditional crafts and ceremonies.",
       "price": "₹4,200"
     },
     {
+      "id": 3,
       "title": "Hundru Falls Adventure",
       "type": "Adventure",
       "desc": "Trek to the majestic 320-foot waterfall and camp under the stars.",
       "price": "₹1,800"
     }
   ],
+
+  "experiences": [
+    {
+      "id": 1,
+      "title": "Netarhat Sunrise Point",
+      "category": "Eco Tourism",
+      "description": "Experience breathtaking sunrises, pine forests, and stargazing.",
+      "price": "2500",
+      "book_url": "#"
+    },
+    {
+      "id": 2,
+      "title": "Santhal Village Immersion",
+      "category": "Cultural",
+      "description": "Live with Santhal families, learn traditional crafts and ceremonies.",
+      "price": "4200",
+      "book_url": "#"
+    },
+    {
+      "id": 3,
+      "title": "Hundru Falls Adventure",
+      "category": "Adventure",
+      "description": "Trek to the majestic 320-foot waterfall and camp under the stars.",
+      "price": "1800",
+      "book_url": "#"
+    }
+  ],
+
   "community": [
-    {
-      "name": "Ravi Kumar",
-      "role": "Eco Guide & Homestay Owner",
-      "rating": "4.9"
-    },
-    {
-      "name": "Sita Devi",
-      "role": "Traditional Craft Artisan",
-      "rating": "5.0"
-    },
-    {
-      "name": "Manoj Singh",
-      "role": "Wildlife Conservation Expert",
-      "rating": "4.8"
-    },
-    {
-      "name": "Anjali Munda",
-      "role": "Cultural Performer & Storyteller",
-      "rating": "4.9"
-    }
+    { "name": "Ravi Kumar", "role": "Eco Guide & Homestay Owner", "rating": "4.9" },
+    { "name": "Sita Devi", "role": "Traditional Craft Artisan", "rating": "5.0" },
+    { "name": "Manoj Singh", "role": "Wildlife Conservation Expert", "rating": "4.8" },
+    { "name": "Anjali Munda", "role": "Cultural Performer & Storyteller", "rating": "4.9" }
   ],
+
   "trails": [
-    {
-      "title": "Netarhat Sunrise Trek",
-      "distance": "5km",
-      "duration": "2h",
-      "price": "₹800"
-    },
-    {
-      "title": "Hundru Falls Circuit",
-      "distance": "12km",
-      "duration": "6h",
-      "price": "₹1,500"
-    },
-    {
-      "title": "Betla Wildlife Safari",
-      "distance": "20km",
-      "duration": "2 days",
-      "price": "₹3,200"
-    }
+    { "id": 11, "title": "Netarhat Sunrise Trek", "distance": "5km", "duration": "2h", "price": "₹800" },
+    { "id": 12, "title": "Hundru Falls Circuit", "distance": "12km", "duration": "6h", "price": "₹1,500" },
+    { "id": 13, "title": "Betla Wildlife Safari", "distance": "20km", "duration": "2 days", "price": "₹3,200" }
   ],
-  "analytics": {
-    "total_bookings": 1247,
-    "revenue": "₹18.5L",
-    "avg_rating": 4.8
+
+  "analytics": { "total_bookings": 1247, "revenue": "₹18.5L", "avg_rating": 4.8 },
+
+  "reviews": {
+    "1": [
+      {
+        "user_id": "guest",
+        "text": "Amazing sunrise, the guide was so friendly!",
+        "rating": 5,
+        "sentiment": "positive"
+      },
+      {
+        "user_id": "guest2",
+        "text": "Nice spot but the trail needs cleanup",
+        "rating": 3,
+        "sentiment": "neutral"
+      }
+    ],
+    "2": [
+      {
+        "user_id": "traveler1",
+        "text": "Loved the cultural show and food, highly recommend.",
+        "rating": 5,
+        "sentiment": "positive"
+      }
+    ],
+    "3": [
+      {
+        "user_id": "hiker",
+        "text": "Beautiful waterfall but the return path was slippery and poorly marked.",
+        "rating": 2,
+        "sentiment": "negative"
+      }
+    ]
   },
-  "reviews": [],
+
   "events": [
-    {
-      "title": "Sarhul Festival",
-      "type": "Cultural",
-      "price": "₹1,200"
-    },
-    {
-      "title": "Karma Festival",
-      "type": "Harvest",
-      "price": "₹1,500"
-    },
-    {
-      "title": "Eco Workshop",
-      "type": "Workshop",
-      "price": "₹2,800"
-    }
-  ]
-  
-  
+    { "id": 21, "title": "Sarhul Festival", "type": "Cultural", "price": "₹1,200" },
+    { "id": 22, "title": "Karma Festival", "type": "Harvest", "price": "₹1,500" },
+    { "id": 23, "title": "Eco Workshop", "type": "Workshop", "price": "₹2,800" }
+  ],
+
+  "bookings": []
 }

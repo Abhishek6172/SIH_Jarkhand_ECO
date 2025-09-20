@@ -8,51 +8,223 @@
 {% block content %}
 <section class="section featured">
   <div class="container">
-    {# pull list from data; fall back to empty list if missing #}
-    {% set experiences_list = (data.get('experiences') if data else []) or [] %}
+    {# Prefer explicit experiences list in JSON, fallback to featured_experiences #}
+    {% set experiences_list = (data.get('experiences') if data else []) or (data.get('featured_experiences') if data else []) or [] %}
 
-    <h2 style="text-align:center;margin:28px 0 12px;font-size:32px;font-weight:800;">Featured Experiences</h2>
+    <h2 class="section-heading" style="text-align:center;margin:24px 0 18px;font-size:40px;font-weight:800;">Featured Experiences</h2>
 
     {% if experiences_list %}
-      <div class="cards-grid">
+      <div class="cards-grid"
+           style="display:flex;gap:28px;justify-content:center;align-items:flex-start;flex-wrap:wrap;">
         {% for exp in experiences_list %}
-          <article class="card experience-card">
-            <div class="card-inner">
-              {% if exp.category %}
-                <div class="card-tag">{{ exp.category }}</div>
+          {% set exp_id = exp.id if exp.id is defined else loop.index %}
+          <article class="card experience-card" data-exp-id="{{ exp_id }}" style="width:340px;max-width:calc(33% - 28px);min-width:260px;display:flex;flex-direction:column;gap:12px;border-radius:14px;padding:18px;background:linear-gradient(180deg,#0b0b0b,#0f0f0f);box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+            <div class="card-inner" style="flex:1;">
+              {% if exp.category or exp.type %}
+                <div class="card-tag" style="display:inline-block;padding:6px 10px;border-radius:12px;background:#062f18;color:#09e07a;font-weight:700;font-size:13px;margin-bottom:10px;">
+                  {{ exp.category or exp.type }}
+                </div>
               {% endif %}
-              <h3 class="card-title">{{ exp.title }}</h3>
-              {% if exp.description %}
-                <p class="card-desc">{{ exp.description }}</p>
+
+              <h3 class="card-title" style="margin:6px 0 10px;font-size:22px;font-weight:800;color:#fff;">{{ exp.title }}</h3>
+
+              {% if exp.description or exp.desc %}
+                <p class="card-desc" style="color:rgba(255,255,255,0.75);margin:0 0 12px;line-height:1.5;">
+                  {{ exp.description or exp.desc }}
+                </p>
               {% endif %}
             </div>
 
-            <div class="card-footer">
+            <div class="card-footer" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
               <div>
                 {% if exp.price %}
-                  <div class="price">₹{{ exp.price }}<span style="font-weight:400;">/person</span></div>
+                  <div class="price" style="font-weight:800;color:#fff;font-size:18px;">₹{{ exp.price|string }}/person</div>
                 {% endif %}
               </div>
               <div>
-                <a class="btn small outline" href="{{ exp.book_url or '#' }}">Book Now</a>
+                <a class="btn small" href="{{ exp.book_url or '#' }}" style="background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#06c36b;text-decoration:none;">Book Now</a>
               </div>
             </div>
 
-            {# optional review form area (kept compact) #}
-            <div class="review-form">
-              <textarea placeholder="Write your review..."></textarea>
-              <div class="review-actions">
-                <input type="number" class="review-rating" min="1" max="5" placeholder="Rating">
-                <button class="review-submit">Submit Review</button>
-              </div>
-              <div class="no-reviews">No reviews yet. Be the first!</div>
-            </div>
+            {# Reviews root container - JS will mount form + list here #}
+            <div class="reviews-root" style="margin-top:8px;"></div>
           </article>
         {% endfor %}
       </div>
     {% else %}
-      <p class="no-reviews" style="text-align:center;margin:24px 0;color:var(--muted)">No experiences available right now. Check back soon.</p>
+      <p style="text-align:center;margin:24px 0;color:rgba(255,255,255,0.6)">No experiences available right now. Check back soon.</p>
     {% endif %}
   </div>
 </section>
+
+<section id="recommendations" class="section" style="margin-top:36px;">
+  <div class="container">
+    <h2 style="text-align:center;margin-bottom:18px;font-weight:800;">Recommended for you</h2>
+    <div id="recommendations-container" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- If you already include a shared main.js with the review logic & recommendation endpoint code, you can remove the inline script below.
+     This inline script is a minimal connector to mount the review UI and render sentiment badges by fetching your existing API. -->
+<script>
+/* Minimal review mounting logic (if you already have the main.js code, keep using that instead).
+   This snippet will:
+   - mount a review form and reviews list into each `.reviews-root`
+   - fetch GET /api/experiences/<id>/reviews for existing reviews
+   - POST to /api/experiences/<id>/reviews on submit (server returns reviews array)
+   - render sentiment badge (d.sentiment) per review
+*/
+(function () {
+  function escapeHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function sentimentClass(sent) {
+    if (!sent) return 'sent-neutral';
+    if (sent === 'positive') return 'sent-positive';
+    if (sent === 'negative') return 'sent-negative';
+    return 'sent-neutral';
+  }
+
+  function renderReviewsList(container, reviews) {
+    container.innerHTML = '';
+    if (!reviews || reviews.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'no-reviews';
+      p.textContent = 'No reviews yet. Be the first!';
+      p.style.color = 'rgba(255,255,255,0.6)';
+      container.appendChild(p);
+      return;
+    }
+    reviews.forEach(r => {
+      const div = document.createElement('div');
+      div.className = 'review-card';
+      div.style.padding = '10px 0';
+      div.style.borderTop = '1px solid rgba(255,255,255,0.03)';
+      const badge = document.createElement('span');
+      badge.textContent = (r.sentiment||'neutral').toUpperCase();
+      badge.className = 'review-sent ' + sentimentClass(r.sentiment);
+      badge.style.padding = '4px 8px';
+      badge.style.borderRadius = '8px';
+      badge.style.fontSize = '12px';
+      badge.style.fontWeight = '700';
+      badge.style.marginRight = '8px';
+      if (r.sentiment === 'positive') { badge.style.background = 'rgba(6,195,107,0.12)'; badge.style.color = '#06e687'; }
+      else if (r.sentiment === 'negative') { badge.style.background = 'rgba(220,40,40,0.08)'; badge.style.color = '#ff8b8b'; }
+      else { badge.style.background = 'rgba(255,255,255,0.03)'; badge.style.color = 'rgba(255,255,255,0.85)'; }
+
+      const meta = document.createElement('div');
+      meta.style.display = 'flex';
+      meta.style.alignItems = 'center';
+      meta.style.gap = '8px';
+      meta.appendChild(badge);
+
+      if (r.rating) {
+        const ratingSpan = document.createElement('span');
+        ratingSpan.textContent = '★ ' + r.rating;
+        ratingSpan.style.color = 'rgba(255,255,255,0.9)';
+        ratingSpan.style.fontWeight = '700';
+        meta.appendChild(ratingSpan);
+      }
+
+      const text = document.createElement('div');
+      text.className = 'review-text';
+      text.style.color = 'rgba(255,255,255,0.8)';
+      text.style.marginTop = '6px';
+      text.innerHTML = escapeHtml(r.text || '');
+
+      div.appendChild(meta);
+      div.appendChild(text);
+      container.appendChild(div);
+    });
+  }
+
+  function mountForm(root, expId) {
+    root.innerHTML = `
+      <div class="review-form" style="background:transparent;">
+        <textarea class="review-text-input" placeholder="Write your review..." rows="3" style="width:100%;border-radius:8px;padding:10px;background:#070707;border:1px solid rgba(255,255,255,0.03);color:#ddd"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <input class="review-rating-input" type="number" min="1" max="5" placeholder="Rating (1-5)" style="width:90px;padding:8px;border-radius:8px;background:#070707;border:1px solid rgba(255,255,255,0.03);color:#ddd"/>
+          <button class="review-submit-btn" style="padding:8px 12px;border-radius:8px;background:#061f12;color:#06c36b;border:1px solid rgba(6,195,107,0.12);">Submit Review</button>
+        </div>
+        <div class="review-feedback" style="margin-top:8px;color:rgba(255,255,255,0.75)"></div>
+        <div class="reviews-list" style="margin-top:12px"></div>
+      </div>
+    `;
+
+    const submit = root.querySelector('.review-submit-btn');
+    const txt = root.querySelector('.review-text-input');
+    const rating = root.querySelector('.review-rating-input');
+    const feedback = root.querySelector('.review-feedback');
+    const list = root.querySelector('.reviews-list');
+
+    // load existing
+    fetch(`/api/experiences/${expId}/reviews`).then(r=>r.json()).then(d=>{
+      renderReviewsList(list, d.reviews || []);
+    }).catch(()=>{ /* ignore */ });
+
+    submit.addEventListener('click', async () => {
+      const text = (txt.value||'').trim();
+      const rVal = rating.value ? Number(rating.value) : null;
+      if (!text) { feedback.textContent = 'Please write a review first.'; return; }
+      submit.disabled = true; feedback.textContent = 'Submitting...';
+
+      try {
+        const res = await fetch(`/api/experiences/${expId}/reviews`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ text, rating: rVal, user_id: 'guest' })
+        });
+        const json = await res.json();
+        if (!res.ok) { feedback.textContent = json.error || 'Failed'; return; }
+        txt.value = ''; rating.value = '';
+        feedback.textContent = 'Thanks — review added.';
+        renderReviewsList(list, json.reviews || []);
+      } catch (err) {
+        console.error(err);
+        feedback.textContent = 'Network error';
+      } finally {
+        submit.disabled = false;
+        setTimeout(()=> feedback.textContent = '', 2500);
+      }
+    });
+  }
+
+  // mount to all cards on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.experience-card').forEach(card=>{
+      const id = card.getAttribute('data-exp-id');
+      const root = card.querySelector('.reviews-root');
+      if (!root || !id) return;
+      mountForm(root, id);
+    });
+
+    // load recommendations (simple adapter)
+    (async function loadRecs(){
+      try {
+        const resp = await fetch('/api/recommendations/1');
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const recs = data.recommendations || [];
+        const cont = document.getElementById('recommendations-container');
+        if (!cont) return;
+        cont.innerHTML = recs.map(it=>{
+          const title = it.title || it.name || 'Untitled';
+          const price = it.price ? `<div style="color:rgba(255,255,255,0.9);font-weight:700">${it.price}/person</div>` : '';
+          return `<div style="min-width:220px;max-width:260px;background:linear-gradient(180deg,#0b0b0b,#101010);padding:14px;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,0.5)"><h4 style="margin:0 0 8px">${title}</h4>${price}</div>`;
+        }).join('');
+      } catch(e){ console.warn(e); }
+    })();
+  });
+})();
+</script>
+
+<style>
+/* small helper classes for sentiment look (if not present in your global CSS) */
+.review-sent { font-size:12px; font-weight:700; padding:4px 8px; border-radius:8px; display:inline-block; }
+.sent-positive { color:#06e687; background:rgba(6,195,107,0.08); }
+.sent-negative { color:#ff8b8b; background:rgba(220,40,40,0.06); }
+.sent-neutral { color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.03); }
+.review-card { margin-bottom:8px; }
+</style>
 {% endblock %}
