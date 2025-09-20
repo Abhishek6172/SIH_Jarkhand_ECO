@@ -1,17 +1,35 @@
 {% extends "base.html" %}
+
 {% block content %}
 <section class="section container">
   <h2>Festivals & Events</h2>
-  <div class="cards-grid small">
+
+  {% set event_images = {
+    "Sarhul Festival": "Sarhul.jpg",
+    "Karma Festival": "karma.jpg",
+    "Eco Workshop": "ECO.jpg"
+  } %}
+
+  <div class="events-row">
     {% for ev in data.events %}
-    <div class="card">
-      <div class="card-tag">{{ ev.type }}</div>
-      <h3>{{ ev.title }}</h3>
-      <div class="card-footer">
-        <div class="price">{{ ev.price }}/person</div>
-        <button class="btn small">Join</button>
+    <article class="card event-card">
+      <div class="card-img">
+        {% set imgfile = ev.image if ev.image is defined else event_images.get(ev.title, 'jharkhand.jpg') %}
+        <img src="{{ url_for('static', filename='images/' ~ imgfile) }}" alt="{{ ev.title }}">
       </div>
-    </div>
+
+      <div class="card-body">
+        <div class="card-tag">{{ ev.type }}</div>
+        <h3 class="card-title">{{ ev.title }}</h3>
+        {% if ev.desc %}
+        <p class="card-desc">{{ ev.desc }}</p>
+        {% endif %}
+        <div class="card-footer">
+          <div class="price">{{ ev.price }}/person</div>
+          <button class="btn small">Join</button>
+        </div>
+      </div>
+    </article>
     {% endfor %}
   </div>
 </section>
