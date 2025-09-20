@@ -1,61 +1,67 @@
 {% extends "base.html" %}
+{% block title %}Jharkhand — Wild Lands, Living Culture{% endblock %}
 
-{% block hero_text %}
-  <div class="hero-text-wrap">
-    <h1 class="hero-title">Jharkhand — Wild Lands, <br/>Living Culture</h1>
-    <p class="hero-sub">
-      Explore tribal villages, pristine waterfalls, and ancient rock art.
-      Book community-led stays and support local guardians of culture.
-    </p>
+{% block hero %}
+<section class="hero-outer">
+  <div class="container hero">
+    <div class="hero-left">
+      <h1 class="hero-title">Jharkhand — Wild Lands,<br/>Living Culture</h1>
+      <p class="hero-sub">
+        Explore tribal villages, pristine waterfalls, and ancient rock art.
+        Book community-led stays and support local guardians of culture.
+      </p>
 
-    <div class="hero-ctas">
-      <a class="btn primary" href="{{ url_for('destinations') }}">Explore Destinations</a>
-      <a class="btn outline" href="{{ url_for('join') }}">List Your Homestay</a>
+      <div class="hero-ctas">
+        <a class="btn primary" href="{{ url_for('destinations') }}">Explore Destinations</a>
+        <a class="btn outline" href="{{ url_for('join') }}">List Your Homestay</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><strong>50+</strong><span>Eco Villages</span></div>
+        <div class="stat"><strong>12</strong><span>Tribal Communities</span></div>
+        <div class="stat"><strong>200+</strong><span>Cultural Sites</span></div>
+      </div>
     </div>
 
-    <div class="hero-stats">
-      <div class="stat"><strong>50+</strong><span>Eco Villages</span></div>
-      <div class="stat"><strong>12</strong><span>Tribal Communities</span></div>
-      <div class="stat"><strong>200+</strong><span>Cultural Sites</span></div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <img src="{{ url_for('static', filename='images/jharkhand.jpg') }}" 
+             alt="Jharkhand landscape" />
+      </div>
     </div>
   </div>
-{% endblock %}
-
-{% block hero_right %}
-  <div class="hero-card">
-    <img src="{{ url_for('static', filename='images/jharkhand.jpg') }}" alt="Jharkhand landscape" />
-  </div>
+</section>
 {% endblock %}
 
 {% block content %}
-  <!-- Featured Experiences -->
-  <section class="section featured">
-    <h2 class="section-heading">Featured Experiences</h2>
-    <div class="cards-grid">
-      {% for e in data.featured_experiences %}
-      <article class="card">
-        <div class="card-tag">{{ e.type }}</div>
-        <h3>{{ e.title }}</h3>
-        <p class="muted">{{ e.desc }}</p>
-        <div class="card-footer">
-          <div class="price">{{ e.price }}/person</div>
-          <button class="btn small">Book Now</button>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- Community Spotlight -->
-  <section class="section community">
-    <h2 class="section-heading">Community Spotlight</h2>
-    <div class="community-grid">
-      {% for person in data.community[:4] %}
-      <div class="community-card">
-        <h4>{{ person.name }}</h4>
-        <p class="muted">{{ person.role }}</p>
+<!-- Featured Experiences -->
+<section class="section featured">
+  <h2 class="section-heading">Featured Experiences</h2>
+  <div class="cards-grid">
+    {% for e in data.featured_experiences %}
+    <article class="card">
+      <div class="card-tag">{{ e.type }}</div>
+      <h3>{{ e.title }}</h3>
+      <p class="muted">{{ e.desc }}</p>
+      <div class="card-footer">
+        <div class="price">{{ e.price }}/person</div>
+        <button class="btn small">Book Now</button>
       </div>
-      {% endfor %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Community Spotlight -->
+<section class="section community">
+  <h2 class="section-heading">Community Spotlight</h2>
+  <div class="community-grid">
+    {% for person in data.community[:4] %}
+    <div class="community-card">
+      <h4>{{ person.name }}</h4>
+      <p class="muted">{{ person.role }}</p>
     </div>
-  </section>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}

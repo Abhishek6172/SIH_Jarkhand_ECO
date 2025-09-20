@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% block content %}
-<section class="hero">
-  <div class="container hero-inner">
+{% block title %}Home - Jharkhand Eco Tourism{% endblock %}
+
+{% block hero %}
+<section class="hero-outer">
+  <div class="container hero">
     <div class="hero-left">
       <h1>{{ data.hero.title }}</h1>
       <p class="lead">{{ data.hero.subtitle }}</p>
@@ -11,19 +13,24 @@
       </div>
       <div class="stats">
         {% for s in data.hero.stats %}
-        <div class="stat"><div class="stat-value">{{ s.value }}</div><div class="stat-label">{{ s.label }}</div></div>
+        <div class="stat">
+          <div class="stat-value">{{ s.value }}</div>
+          <div class="stat-label">{{ s.label }}</div>
+        </div>
         {% endfor %}
       </div>
     </div>
     <div class="hero-right">
-     <div class="hero-card">
-  <img src="{{ url_for('static', filename='images/jharkhand.jpg') }}" alt="Jharkhand Landscape" class="hero-img">
-</div>
-</div>
+      <div class="hero-card">
+        <img src="{{ url_for('static', filename='images/jharkhand.jpg') }}" 
+             alt="Jharkhand Landscape" class="hero-img">
+      </div>
     </div>
   </div>
 </section>
+{% endblock %}
 
+{% block content %}
 <section id="featured" class="section container">
   <h2>Featured Experiences</h2>
   <div class="cards-grid">
@@ -40,13 +47,15 @@
     {% endfor %}
   </div>
 </section>
+
 <section id="recommendations">
   <h2>Recommended for you</h2>
   <div id="recommendations-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
   </div>
 </section>
+
 <section id="search-section">
-    <input type="text" id="search-bar" placeholder="Search for experiences, events, or guides...">
-    <div id="search-results"></div>
+  <input type="text" id="search-bar" placeholder="Search for experiences, events, or guides...">
+  <div id="search-results"></div>
 </section>
 {% endblock %}

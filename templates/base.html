@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{% block title %}Jharkhand Eco Tourism{% endblock %}</title>
 
-  <!-- Link CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-  <!-- optional additional CSS -->
   {% block head_extra %}{% endblock %}
 </head>
 <body>
   <div class="site-wrapper">
+    <!-- Header -->
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">Jharkhand Eco Tourism</div>
@@ -23,22 +23,20 @@
           <a href="{{ url_for('trails') }}">Trails</a>
           <a href="{{ url_for('events') }}">Events</a>
           <a href="{{ url_for('analytics') }}">Analytics</a>
-          <a href="{{ url_for('join') }}" id="nav-join">Join</a>
+          <a href="{{ url_for('join') }}">Join</a>
         </nav>
       </div>
     </header>
 
-    <!-- Hero section (glowing background line image) -->
-    <section class="hero-outer">
-      <div class="hero-container container">
-        {% block hero %}{% endblock %}
-      </div>
-    </section>
+    <!-- Hero placeholder -->
+    {% block hero %}{% endblock %}
 
+    <!-- Main Content -->
     <main id="main" class="site-main container">
       {% block content %}{% endblock %}
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer">
       <div class="container footer-inner">
         <div class="footer-col">
@@ -64,14 +62,13 @@
     </footer>
   </div>
 
-  <!-- small script to set active nav link based on path -->
+  <!-- Active nav highlight -->
   <script>
     (function() {
       try {
         const path = window.location.pathname;
         const nav = document.querySelectorAll('.site-nav a');
         nav.forEach(a => {
-          // simple path match: if href ends with same fragment or equals path
           const href = a.getAttribute('href');
           if (href === path || (href !== '/' && path.startsWith(href))) {
             a.classList.add('active');
