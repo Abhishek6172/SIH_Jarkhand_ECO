@@ -1,0 +1,46 @@
+/* bg.css - canvas background container & overlay (updated) */
+
+/* Remove older stripe overlays if present */
+body::before, body::after, .hero-bg, .hero-bg::before, .hero-bg::after {
+  display: none !important;
+  background: none !important;
+}
+
+/* Background container (holds canvas + overlay) */
+#bg-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;               /* behind site wrapper */
+  pointer-events: none;     /* canvas won't block clicks */
+  overflow: hidden;
+  background: transparent;
+}
+
+/* The canvas that draws everything */
+#bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* subtle overlay so foreground remains readable */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.62));
+}
+
+/* keep site content above background */
+.site-wrapper { position: relative; z-index: 2; }
+
+/* hide on print */
+@media print {
+  #bg-container { display: none !important; }
+}

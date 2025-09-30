@@ -5,12 +5,21 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{% block title %}Jharkhand Eco Tourism{% endblock %}</title>
 
-  <!-- CSS -->
+  <!-- Main site CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+  <!-- Background CSS (keeps separation) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bg.css') }}">
 
   {% block head_extra %}{% endblock %}
 </head>
 <body>
+  <!-- Background canvas container (always present, invisible to pointer events) -->
+  <div id="bg-container" aria-hidden="true">
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-overlay"></div>
+  </div>
+
   <div class="site-wrapper">
     <!-- Header -->
     <header class="site-header">
@@ -82,6 +91,12 @@
     })();
   </script>
 
+  <!-- Background JS (load after page so canvas exists) -->
+  <script src="{{ url_for('static', filename='js/bg.js') }}"></script>
+<div id="bg-container" aria-hidden="true">
+  <canvas id="bg-canvas" width="100" height="100"></canvas>
+  <div class="bg-overlay"></div>
+</div>
   {% block scripts %}{% endblock %}
 </body>
 </html>
